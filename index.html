@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#27333b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Gros pari">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icone-180.png">
+<link rel="icon" type="image/png" href="icone-192.png">
+<title>Suivi gros pari</title>
+<style>
+:root{
+  --panneau:#27333b; --creux:#1b252b; --filet:#3e4d57;
+  --gravure:#ece8dd; --sourdine:#9fadb3;
+  --vert:#45b27a; --ambre:#e3a72f; --rouge:#dc5a50;
+  --aff:"DIN Alternate","Bahnschrift","Roboto Condensed","Arial Narrow",system-ui,sans-serif;
+  --txt:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{background:var(--panneau);color:var(--gravure);-webkit-text-size-adjust:100%}
+body{margin:0 auto;max-width:780px;font-family:var(--txt);font-size:15px;line-height:1.45;
+  padding:calc(env(safe-area-inset-top,0px) + 16px) calc(env(safe-area-inset-right,0px) + 14px) calc(env(safe-area-inset-bottom,0px) + 32px) calc(env(safe-area-inset-left,0px) + 14px)}
+h1,h2,p,ul,figure{margin:0}
+ul{padding:0;list-style:none}
+.tete{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.tete h1{font-family:var(--aff);font-size:27px;font-weight:700;line-height:1.1}
+.maj{font:inherit;font-size:12.5px;color:var(--sourdine);background:none;border:1px solid var(--filet);border-radius:999px;padding:6px 12px;white-space:nowrap}
+.maj:focus-visible,summary:focus-visible{outline:2px solid var(--ambre);outline-offset:2px}
+.etat{margin-top:6px;color:var(--sourdine)}
+.tableau{margin-top:16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 10px;background:var(--creux);border:1px solid var(--filet);border-radius:16px;padding:14px 10px 12px;box-shadow:inset 0 2px 6px rgba(0,0,0,.35)}
+.instrument{text-align:center;min-width:0}
+.nom{font-family:var(--aff);font-size:15px;font-weight:700;line-height:1.2;margin-bottom:6px}
+.cadran svg{display:block;width:100%;max-width:230px;height:auto;margin:0 auto}
+.cadran text{font-family:var(--aff)}
+.instrument figcaption{margin-top:6px;font-size:12.5px;line-height:1.35;color:var(--sourdine)}
+.instrument figcaption b{color:var(--gravure);font-weight:600}
+.lectures{margin-top:12px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.lecture{background:var(--creux);border:1px solid var(--filet);border-radius:10px;padding:9px 10px;min-width:0}
+.lecture span{display:block;font-size:12px;color:var(--sourdine);line-height:1.25}
+.lecture b{display:block;margin-top:3px;font-family:var(--aff);font-size:21px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums;white-space:nowrap}
+.lecture small{display:block;margin-top:3px;font-size:11.5px;color:var(--sourdine);line-height:1.25}
+.pos{color:var(--vert)}
+.neg{color:var(--rouge)}
+.bloc{margin-top:26px}
+.bloc h2{font-family:var(--aff);font-size:19px;font-weight:700;line-height:1.2}
+.sous{margin-top:3px;font-size:13px;color:var(--sourdine)}
+.courbe{margin-top:10px;background:var(--creux);border:1px solid var(--filet);border-radius:12px;padding:8px 6px 4px}
+.courbe svg{display:block;width:100%;height:auto;touch-action:pan-y}
+.courbe text{font-family:var(--txt);font-size:11px;fill:var(--sourdine)}
+.legende{margin-top:8px;font-size:13px;color:var(--sourdine);min-height:1.45em}
+.tickets{margin-top:10px;display:grid;gap:8px}
+.ticket{background:var(--creux);border:1px solid var(--filet);border-radius:12px;padding:10px 12px}
+.t-haut{display:flex;align-items:baseline;gap:10px}
+.t-date{font-family:var(--aff);font-size:14px;color:var(--sourdine);white-space:nowrap}
+.t-nom{flex:1;min-width:0;font-weight:600;overflow-wrap:anywhere}
+.t-cote{font-family:var(--aff);font-size:17px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.t-bas{margin-top:6px;display:flex;align-items:center;gap:8px;font-size:13px}
+.pastille{border-radius:999px;padding:2px 9px;border:1px solid currentColor;white-space:nowrap}
+.pastille.gagne{color:var(--vert)}
+.pastille.perdu{color:var(--rouge)}
+.pastille.attente{color:var(--ambre)}
+.sans-mise{color:var(--sourdine);white-space:nowrap}
+.t-gain{margin-left:auto;font-family:var(--aff);font-size:17px;font-variant-numeric:tabular-nums;white-space:nowrap}
+details{margin-top:14px;border-top:1px solid var(--filet);padding-top:12px}
+summary{cursor:pointer;font-family:var(--aff);font-size:18px;font-weight:700}
+.duo{margin-top:10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.defile{margin-top:10px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:12.5px;font-variant-numeric:tabular-nums}
+th{text-align:left;font-weight:600;color:var(--sourdine);padding:6px 8px;border-bottom:1px solid var(--filet);white-space:nowrap}
+td{padding:6px 8px;border-bottom:1px solid var(--filet);vertical-align:top}
+td.n{text-align:right;white-space:nowrap}
+td.d{white-space:nowrap}
+.notes p{margin-top:8px;font-size:13.5px;color:var(--sourdine);max-width:68ch}
+@media (min-width:660px){.tableau{grid-template-columns:repeat(4,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<header class="tete">
+  <h1>Suivi gros pari</h1>
+  <button class="maj" id="maj" type="button">Actualiser</button>
+</header>
+<p class="etat" id="etat"></p>
+
+<section class="tableau" aria-label="Tableau de bord">
+  <figure class="instrument"><div class="nom">Capital</div><div class="cadran" id="c-capital"></div><figcaption id="l-capital"></figcaption></figure>
+  <figure class="instrument"><div class="nom">ROI de la saison</div><div class="cadran" id="c-roi"></div><figcaption id="l-roi"></figcaption></figure>
+  <figure class="instrument"><div class="nom">Tickets gagnés</div><div class="cadran" id="c-reussite"></div><figcaption id="l-reussite"></figcaption></figure>
+  <figure class="instrument"><div class="nom">Défaites de suite</div><div class="cadran" id="c-serie"></div><figcaption id="l-serie"></figcaption></figure>
+</section>
+
+<section class="lectures" aria-label="Chiffres du suivi">
+  <div class="lecture"><span>Gain net</span><b id="v-gain">—</b><small id="s-gain"></small></div>
+  <div class="lecture"><span>En attente</span><b id="v-attente">—</b><small id="s-attente"></small></div>
+  <div class="lecture"><span>Mise par ticket</span><b id="v-mise">—</b><small id="s-mise"></small></div>
+</section>
+
+<section class="bloc">
+  <h2>Évolution du capital</h2>
+  <p class="sous">Un point par ticket joué et réglé. Toucher un point pour le détail.</p>
+  <div class="courbe" id="courbe"></div>
+  <p class="legende" id="legende" aria-live="polite"></p>
+</section>
+
+<section class="bloc">
+  <h2>Tickets depuis le 12/11</h2>
+  <p class="sous" id="sous-tickets"></p>
+  <ul class="tickets" id="tickets"></ul>
+</section>
+
+<section class="bloc">
+  <details>
+    <summary>Analyse enregistrée : 22/10 → 11/11</summary>
+    <p class="sous">Simulation sur les gros paris donnés avant le suivi, à la mise fixe. Ils n’ont pas été joués et une partie des cotes est estimée.</p>
+    <div class="duo">
+      <div class="lecture"><span>ML seul</span><b id="h-ml">—</b><small id="hs-ml"></small></div>
+      <div class="lecture"><span>Avec handicap sur les cotes ≈ 1,10</span><b id="h-hcp">—</b><small id="hs-hcp"></small></div>
+    </div>
+    <div class="defile"><table><thead><tr><th>Nuit du</th><th>Ticket ML</th><th>Cote</th><th>ML</th><th>Ticket avec handicap (écart réel)</th><th>Cote</th><th>Handicap</th></tr></thead><tbody id="t-histo"></tbody></table></div>
+  </details>
+  <details class="notes">
+    <summary>Définitions</summary>
+    <p>Capital : capital de départ plus les gains et pertes des tickets joués et réglés.</p>
+    <p>À sec : nombre de défaites d’affilée après lesquelles le capital ne couvre plus une mise. Il monte quand le capital monte, puisque les gains restent dans le capital.</p>
+    <p>ROI : gain net divisé par le total misé. La saison compte tous les gros paris depuis le 22/10, tickets non joués compris, à la mise fixe.</p>
+    <p>Seuil de rentabilité : part de tickets à gagner pour être à l’équilibre, soit 1 divisé par la cote moyenne.</p>
+    <p>Gros pari : ticket ML du soir, avec handicap sur les jambes à cote ≈ 1,10 ; un prop joueur peut s’y ajouter. Deux tickets sûrs le même soir comptent pour deux mises.</p>
+    <p>Cotes : cote estimée du bookmaker, remplacée par la cote réellement obtenue quand elle est communiquée.</p>
+  </details>
+</section>
+
+<script id="donnees" type="application/json">{"maj":"2026-11-12T21:47","reglages":{"capital":1000,"mise":250,"debut_mises":"2026-11-13"},"paris":[{"id":"2026-11-12-T1","nuit":"2026-11-12","ticket":"DET + PHX","type":"ML","cote":1.79,"statut":"attente","mise":250.0,"joue":0},{"id":"2026-11-12-T2","nuit":"2026-11-12","ticket":"MIN + DET","type":"ML","cote":1.88,"statut":"attente","mise":250.0,"joue":0}],"historique":[{"id":"2026-10-22-1","nuit":"2026-10-22","ticket_ml":"OKC","cote_ml":1.33,"ok_ml":1,"ticket_hcp":"OKC","cote_hcp":1.33,"ok_hcp":1},{"id":"2026-10-23-1","nuit":"2026-10-23","ticket_ml":"LAL + POR","cote_ml":1.72,"ok_ml":1,"ticket_hcp":"LAL + POR","cote_hcp":1.72,"ok_hcp":1},{"id":"2026-10-24-1","nuit":"2026-10-24","ticket_ml":"PHI + SAS + DEN","cote_ml":1.62,"ok_ml":1,"ticket_hcp":"PHI -5.5 (+11) + SAS -5.5 (+16) + DEN","cote_hcp":2.07,"ok_hcp":1},{"id":"2026-10-25-1","nuit":"2026-10-25","ticket_ml":"OKC + NYK + IND","cote_ml":1.96,"ok_ml":0,"ticket_hcp":"OKC -7.5 (+7) + NYK + IND","cote_hcp":2.36,"ok_hcp":0},{"id":"2026-10-26-1","nuit":"2026-10-26","ticket_ml":"BOS + OKC","cote_ml":1.46,"ok_ml":1,"ticket_hcp":"BOS -7.5 (+35) + OKC","cote_hcp":1.65,"ok_hcp":1},{"id":"2026-10-27-1","nuit":"2026-10-27","ticket_ml":"BOS + SAS","cote_ml":1.25,"ok_ml":1,"ticket_hcp":"BOS -4.5 (+1) + SAS -11.5 (+27)","cote_hcp":1.75,"ok_hcp":0},{"id":"2026-10-28-1","nuit":"2026-10-28","ticket_ml":"CLE + HOU","cote_ml":1.69,"ok_ml":1,"ticket_hcp":"CLE + HOU","cote_hcp":1.69,"ok_hcp":1},{"id":"2026-10-29-1","nuit":"2026-10-29","ticket_ml":"POR","cote_ml":1.35,"ok_ml":0,"ticket_hcp":"POR","cote_hcp":1.35,"ok_hcp":0},{"id":"2026-10-30-1","nuit":"2026-10-30","ticket_ml":"BOS + DET + MIA","cote_ml":1.9,"ok_ml":1,"ticket_hcp":"BOS -8.5 (+14) + DET + MIA","cote_hcp":2.31,"ok_hcp":1},{"id":"2026-10-31-1","nuit":"2026-10-31","ticket_ml":"CLE + SAS + Sabonis 11+ reb","cote_ml":2.1,"ok_ml":1,"ticket_hcp":"CLE + SAS -5.5 (+10) + Sabonis 11+ reb","cote_hcp":2.35,"ok_hcp":1},{"id":"2026-11-04-1","nuit":"2026-11-04","ticket_ml":"NYK + SAS + HOU","cote_ml":1.93,"ok_ml":0,"ticket_hcp":"NYK -4.5 (+30) + SAS + HOU","cote_hcp":2.13,"ok_hcp":0},{"id":"2026-11-06-1","nuit":"2026-11-06","ticket_ml":"SAS + BOS + DAL","cote_ml":1.95,"ok_ml":1,"ticket_hcp":"SAS -8.5 (+15) + BOS + DAL","cote_hcp":2.31,"ok_hcp":1},{"id":"2026-11-07-1","nuit":"2026-11-07","ticket_ml":"OKC + DEN","cote_ml":1.67,"ok_ml":1,"ticket_hcp":"OKC + DEN","cote_hcp":1.67,"ok_hcp":1},{"id":"2026-11-08-1","nuit":"2026-11-08","ticket_ml":"BOS + MIN + PHI","cote_ml":1.71,"ok_ml":1,"ticket_hcp":"BOS -5.5 (+20) + MIN -4.5 (+15) + PHI","cote_hcp":2.1,"ok_hcp":1},{"id":"2026-11-09-1","nuit":"2026-11-09","ticket_ml":"DET + GSW + CLE","cote_ml":1.97,"ok_ml":0,"ticket_hcp":"DET + GSW -6.5 (+51) + CLE","cote_hcp":2.24,"ok_hcp":0},{"id":"2026-11-10-1","nuit":"2026-11-10","ticket_ml":"COL + NYK -9.5 + BOS","cote_ml":4.1,"ok_ml":1,"ticket_hcp":"COL + NYK -9.5 (+32) + BOS","cote_hcp":4.1,"ok_hcp":1},{"id":"2026-11-11-1","nuit":"2026-11-11","ticket_ml":"LAL -5.5 + SAS -7.5","cote_ml":1.5,"ok_ml":0,"ticket_hcp":"LAL -5.5 (+11) + SAS -7.5 (+5)","cote_hcp":1.5,"ok_hcp":0},{"id":"2026-11-11-2","nuit":"2026-11-11","ticket_ml":"EDM + SGA 27.5+ + SAS -7.5","cote_ml":2.52,"ok_ml":0,"ticket_hcp":"EDM + SGA 27.5+ + SAS -7.5 (+5)","cote_hcp":2.52,"ok_hcp":0}]}</script>
+<script>
+(() => {
+  'use strict';
+  const D = JSON.parse(document.getElementById('donnees').textContent);
+  const REF = D.reglages;
+  const $ = (id) => document.getElementById(id);
+  const moins = (s) => s.replace('-', '−');
+  const nf0 = new Intl.NumberFormat('fr-FR', {maximumFractionDigits: 0});
+  const nf1 = new Intl.NumberFormat('fr-FR', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+  const nf2 = new Intl.NumberFormat('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  const ent = (v) => moins(nf0.format(Math.round(v)));
+  const eur = (v) => ent(v) + ' €';
+  const eurS = (v) => (Math.round(v) > 0 ? '+' : '') + ent(v) + ' €';
+  const pctS = (v) => (v > 0 ? '+' : '') + moins(nf1.format(v)) + ' %';
+  const jour = (iso) => iso.slice(8, 10) + '/' + iso.slice(5, 7);
+  const estJoue = (t) => String(t.joue) !== '0';
+  const estRegle = (t) => t.statut === 'gagne' || t.statut === 'perdu';
+  const gainDe = (t) => (t.statut === 'gagne' ? t.mise * (t.cote - 1) : -t.mise);
+  const somme = (liste, f) => liste.reduce((s, t) => s + f(t), 0);
+  const noeud = (balise, classe, texte) => {
+    const e = document.createElement(balise);
+    if (classe) e.className = classe;
+    if (texte !== undefined) e.textContent = texte;
+    return e;
+  };
+
+  /* ---- calculs ---- */
+  const joues = D.paris.filter(estJoue);
+  const regles = joues.filter(estRegle);
+  const attente = joues.filter((t) => t.statut === 'attente');
+  const gain = somme(regles, gainDe);
+  const mise = somme(regles, (t) => t.mise);
+  const capital = REF.capital + gain;
+  const reste = Math.max(0, Math.floor(capital / REF.mise));
+  let serie = 0;
+  regles.forEach((t) => { serie = t.statut === 'perdu' ? serie + 1 : 0; });
+  const engage = somme(attente, (t) => t.mise);
+
+  const saison = D.historique.map((t) => ({cote: t.cote_ml, gagne: t.ok_ml === 1, mise: REF.mise}))
+    .concat(D.paris.filter(estRegle).map((t) => ({cote: t.cote, gagne: t.statut === 'gagne', mise: t.mise})));
+  const sMise = somme(saison, (t) => t.mise);
+  const sGain = somme(saison, (t) => (t.gagne ? t.mise * (t.cote - 1) : -t.mise));
+  const sGagnes = saison.filter((t) => t.gagne).length;
+  const sRoi = sMise ? 100 * sGain / sMise : 0;
+  const sTaux = saison.length ? 100 * sGagnes / saison.length : 0;
+  const sSeuil = saison.length ? 100 / (somme(saison, (t) => t.cote) / saison.length) : 50;
+  let sSerie = 0;
+  let sPire = 0;
+  saison.forEach((t) => { sSerie = t.gagne ? 0 : sSerie + 1; sPire = Math.max(sPire, sSerie); });
+
+  const points = [{capital: REF.capital}];
+  regles.forEach((t) => {
+    const g = gainDe(t);
+    points.push({capital: points[points.length - 1].capital + g, gain: g, nuit: t.nuit, ticket: t.ticket, gagne: t.statut === 'gagne'});
+  });
+
+  /* ---- en-tête ---- */
+  $('etat').textContent = joues.length === 0
+    ? 'Aucune mise pour l’instant. Les mises commencent le ' + jour(REF.debut_mises) + ' avec un capital de ' + eur(REF.capital) + '.'
+    : 'Capital de ' + eur(capital) + ' après ' + regles.length + ' ticket' + (regles.length > 1 ? 's' : '') + ' joué' + (regles.length > 1 ? 's' : '') + ' et réglé' + (regles.length > 1 ? 's' : '') + '.'
+      + (attente.length ? ' ' + attente.length + ' en attente, ' + eur(engage) + ' engagés.' : '');
+  const bouton = $('maj');
+  bouton.textContent = '↻ ' + jour(D.maj) + ' à ' + D.maj.slice(11, 13) + 'h' + D.maj.slice(14, 16);
+  bouton.setAttribute('aria-label', 'Recharger. Données du ' + jour(D.maj) + ' à ' + D.maj.slice(11, 13) + 'h' + D.maj.slice(14, 16));
+  bouton.addEventListener('click', () => location.reload());
+
+  /* ---- cadrans ---- */
+  const NS = 'http://www.w3.org/2000/svg';
+  const svgEl = (nom, attrs, parent) => {
+    const e = document.createElementNS(NS, nom);
+    Object.keys(attrs).forEach((k) => e.setAttribute(k, attrs[k]));
+    if (parent) parent.appendChild(e);
+    return e;
+  };
+  const COUL = {rouge: [220, 90, 80], ambre: [227, 167, 47], vert: [69, 178, 122]};
+  const TON = {pos: '#45b27a', neg: '#dc5a50', alerte: '#e3a72f', neutre: '#ece8dd'};
+  const melange = (a, b, t) => 'rgb(' + a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(',') + ')';
+  const DEB = -135;
+  const ETENDUE = 270;
+  const pos = (deg, r) => {
+    const a = deg * Math.PI / 180;
+    return [(100 + r * Math.sin(a)).toFixed(2), (100 - r * Math.cos(a)).toFixed(2)];
+  };
+  const anime = window.matchMedia && window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+
+  function dessinerCadran(id, s) {
+    const el = $(id);
+    const part = (v) => Math.max(0, Math.min(1, (v - s.min) / ((s.max - s.min) || 1)));
+    const angle = (f) => DEB + ETENDUE * f;
+    const pivot = s.inverse ? 0.5 : Math.min(0.9, Math.max(0.1, part(s.seuil)));
+    const teinte = (f) => {
+      const c = s.inverse ? [COUL.vert, COUL.ambre, COUL.rouge] : [COUL.rouge, COUL.ambre, COUL.vert];
+      return f <= pivot ? melange(c[0], c[1], f / pivot) : melange(c[1], c[2], (f - pivot) / (1 - pivot));
+    };
+    const svg = svgEl('svg', {viewBox: '0 0 200 200', role: 'img', 'aria-label': s.aria});
+    const idLunette = 'lunette-' + id;
+    const lunette = svgEl('linearGradient', {id: idLunette, x1: 0, y1: 0, x2: 0, y2: 1}, svgEl('defs', {}, svg));
+    svgEl('stop', {offset: 0, 'stop-color': '#6c7d87'}, lunette);
+    svgEl('stop', {offset: 1, 'stop-color': '#27323a'}, lunette);
+    svgEl('circle', {cx: 100, cy: 100, r: 98, fill: 'url(#' + idLunette + ')'}, svg);
+    svgEl('circle', {cx: 100, cy: 100, r: 91, fill: '#0e1315', stroke: '#05080a', 'stroke-width': 1.5}, svg);
+    const N = 72;
+    for (let i = 0; i < N; i++) {
+      const a = pos(angle(i / N) - 0.4, 80);
+      const b = pos(angle((i + 1) / N) + 0.4, 80);
+      svgEl('path', {d: 'M' + a[0] + ' ' + a[1] + 'A80 80 0 0 1 ' + b[0] + ' ' + b[1], fill: 'none', stroke: teinte((i + 0.5) / N), 'stroke-width': 9}, svg);
+    }
+    s.graduations.forEach((v, i) => {
+      const d = angle(part(v));
+      const p1 = pos(d, 63);
+      const p2 = pos(d, 73);
+      const pl = pos(d, 49);
+      svgEl('line', {x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1], stroke: '#ece8dd', 'stroke-width': 2, 'stroke-linecap': 'round'}, svg);
+      svgEl('text', {x: pl[0], y: (+pl[1] + 4).toFixed(2), 'text-anchor': 'middle', 'font-size': 11.5, fill: '#c6cdcd'}, svg).textContent = s.fmtGrad(v);
+      if (i < s.graduations.length - 1) {
+        const dm = angle((part(v) + part(s.graduations[i + 1])) / 2);
+        const m1 = pos(dm, 67);
+        const m2 = pos(dm, 73);
+        svgEl('line', {x1: m1[0], y1: m1[1], x2: m2[0], y2: m2[1], stroke: '#7d8b92', 'stroke-width': 1.3}, svg);
+      }
+    });
+    if (!s.inverse) {
+      const d = angle(part(s.seuil));
+      const a = pos(d, 86);
+      const b = pos(d - 4, 95);
+      const c = pos(d + 4, 95);
+      svgEl('path', {d: 'M' + a[0] + ' ' + a[1] + 'L' + b[0] + ' ' + b[1] + 'L' + c[0] + ' ' + c[1] + 'Z', fill: '#ece8dd'}, svg);
+    }
+    svgEl('rect', {x: 63, y: 152, width: 74, height: 26, rx: 5, fill: '#05080a', stroke: '#3e4d57'}, svg);
+    svgEl('text', {x: 100, y: 171, 'text-anchor': 'middle', 'font-size': 17, 'font-weight': 700, fill: TON[s.ton] || TON.neutre}, svg).textContent = s.lecture;
+    const aiguille = svgEl('g', {}, svg);
+    svgEl('path', {d: 'M100 26L102.6 41L101.2 45L101.3 98L101.7 119L98.3 119L98.7 98L98.8 45L97.4 41Z', fill: '#f4f1e8', stroke: '#05080a', 'stroke-width': 0.8, 'stroke-linejoin': 'round'}, aiguille);
+    svgEl('circle', {cx: 100, cy: 100, r: 8.5, fill: '#39464e', stroke: '#6c7d87', 'stroke-width': 1.2}, svg);
+    svgEl('circle', {cx: 100, cy: 100, r: 2.2, fill: '#0e1315'}, svg);
+    el.replaceChildren(svg);
+    const cible = angle(part(s.valeur));
+    const poser = (deg) => aiguille.setAttribute('transform', 'rotate(' + deg.toFixed(2) + ' 100 100)');
+    if (!anime) { poser(cible); return; }
+    poser(DEB);
+    const t0 = performance.now() + 150 * s.rang;
+    const duree = 1100;
+    const pas = (t) => {
+      const k = Math.max(0, Math.min(1, (t - t0) / duree));
+      poser(DEB + (cible - DEB) * (1 - Math.pow(1 - k, 3)));
+      if (k < 1) requestAnimationFrame(pas);
+    };
+    requestAnimationFrame(pas);
+  }
+
+  const legender = (id, lignes) => {
+    const el = $(id);
+    el.replaceChildren();
+    lignes.forEach((segments, i) => {
+      if (i) el.appendChild(document.createElement('br'));
+      segments.forEach((seg) => el.appendChild(typeof seg === 'string' ? document.createTextNode(seg) : noeud('b', '', seg[0])));
+    });
+  };
+  const cinq = (min, max) => [0, 1, 2, 3, 4].map((i) => min + (max - min) * i / 4);
+
+  const maxCapital = Math.max(2 * REF.capital, Math.ceil(capital / 500) * 500 + 500);
+  dessinerCadran('c-capital', {
+    rang: 0, min: 0, max: maxCapital, seuil: REF.capital, valeur: capital,
+    graduations: cinq(0, maxCapital), fmtGrad: ent, lecture: eur(capital),
+    ton: capital > REF.capital ? 'pos' : capital < REF.capital ? 'neg' : 'neutre',
+    aria: 'Capital : ' + eur(capital) + ', pour un départ à ' + eur(REF.capital)
+  });
+  legender('l-capital', [['À sec en ', [String(reste)], ' défaite' + (reste > 1 ? 's' : '') + ' d’affilée'], ['Départ ' + eur(REF.capital)]]);
+
+  const borne = Math.max(50, Math.ceil(Math.abs(sRoi) / 25) * 25);
+  dessinerCadran('c-roi', {
+    rang: 1, min: -borne, max: borne, seuil: 0, valeur: sRoi,
+    graduations: cinq(-borne, borne), fmtGrad: (v) => (v > 0 ? '+' : '') + ent(v), lecture: pctS(sRoi),
+    ton: sRoi > 0 ? 'pos' : sRoi < 0 ? 'neg' : 'neutre',
+    aria: 'Rendement de la saison : ' + pctS(sRoi)
+  });
+  legender('l-roi', [[[eurS(sGain)], ' sur ' + eur(sMise) + ' misés'], ['Tickets non joués compris']]);
+
+  dessinerCadran('c-reussite', {
+    rang: 2, min: 0, max: 100, seuil: sSeuil, valeur: sTaux,
+    graduations: cinq(0, 100), fmtGrad: ent, lecture: ent(sTaux) + ' %',
+    ton: sTaux >= sSeuil ? 'pos' : 'neg',
+    aria: 'Réussite de la saison : ' + ent(sTaux) + ' %, seuil de rentabilité ' + ent(sSeuil) + ' %'
+  });
+  legender('l-reussite', [[[sGagnes + ' / ' + saison.length], ' tickets gagnés'], ['Seuil de rentabilité ' + ent(sSeuil) + ' %']]);
+
+  const maxSerie = Math.max(1, serie + reste);
+  const gradSerie = maxSerie <= 6 ? Array.from({length: maxSerie + 1}, (_, i) => i) : Array.from(new Set(cinq(0, maxSerie).map(Math.round)));
+  dessinerCadran('c-serie', {
+    rang: 3, min: 0, max: maxSerie, inverse: true, valeur: reste === 0 ? maxSerie : serie,
+    graduations: gradSerie, fmtGrad: ent, lecture: serie + ' / ' + (serie + reste),
+    ton: serie === 0 ? 'pos' : reste <= 1 ? 'neg' : 'alerte',
+    aria: 'Défaites d’affilée en cours : ' + serie + ' sur ' + (serie + reste) + ' avant capital à sec'
+  });
+  legender('l-serie', [['En cours, sur ', [String(serie + reste)], ' possibles'], ['Pire série de la saison : ' + sPire]]);
+
+  /* ---- lectures ---- */
+  const vGain = $('v-gain');
+  vGain.textContent = eurS(gain);
+  if (Math.round(gain) !== 0) vGain.className = gain > 0 ? 'pos' : 'neg';
+  $('s-gain').textContent = regles.length ? 'pour ' + eur(mise) + ' misés' : 'aucun ticket réglé';
+  $('v-attente').textContent = String(attente.length);
+  $('s-attente').textContent = attente.length ? eur(engage) + ' engagés' : 'rien d’engagé';
+  $('v-mise').textContent = eur(REF.mise);
+  $('s-mise').textContent = 'la même chaque soir';
+
+  /* ---- courbe ---- */
+  const legende = $('legende');
+  const decrire = (i) => {
+    const p = points[i];
+    legende.textContent = i === 0
+      ? 'Départ : ' + eur(p.capital) + (points.length === 1 ? '. La courbe démarre au premier ticket joué.' : '.')
+      : 'Nuit du ' + jour(p.nuit) + ', ' + p.ticket + ' : ' + (p.gagne ? 'gagné ' : 'perdu ') + eurS(p.gain) + ', capital ' + eur(p.capital) + '.';
+  };
+  let choisi = points.length - 1;
+  function dessinerCourbe() {
+    const el = $('courbe');
+    const W = Math.max(280, (el.clientWidth || 352) - 12);
+    const H = 190;
+    const n = points.length - 1;
+    const maxi = Math.max.apply(null, points.map((p) => p.capital).concat(REF.capital)) * 1.1;
+    const palier = maxi <= 2000 ? 500 : maxi <= 4000 ? 1000 : maxi <= 10000 ? 2500 : 5000;
+    const haut = Math.ceil(maxi / palier) * palier;
+    const mg = {h: 12, d: 14, b: 24, g: 54};
+    const x = (i) => mg.g + (W - mg.g - mg.d) * i / Math.max(n, 6);
+    const y = (v) => H - mg.b - (H - mg.h - mg.b) * Math.max(0, v) / haut;
+    const svg = svgEl('svg', {viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': 'Évolution du capital : ' + eur(points[n].capital) + ' après ' + n + ' ticket' + (n > 1 ? 's' : '') + ', départ ' + eur(REF.capital)});
+    for (let v = 0; v <= haut; v += palier) {
+      svgEl('line', {x1: mg.g, x2: W - mg.d, y1: y(v), y2: y(v), stroke: '#33424b', 'stroke-width': 1}, svg);
+      svgEl('text', {x: mg.g - 14, y: y(v) + 4, 'text-anchor': 'end'}, svg).textContent = ent(v);
+    }
+    svgEl('line', {x1: mg.g, x2: W - mg.d, y1: y(REF.capital), y2: y(REF.capital), stroke: '#9fadb3', 'stroke-width': 1, 'stroke-dasharray': '4 4'}, svg);
+    if (n > 0) svgEl('polyline', {points: points.map((p, i) => x(i).toFixed(1) + ',' + y(p.capital).toFixed(1)).join(' '), fill: 'none', stroke: '#ece8dd', 'stroke-width': 2, 'stroke-linejoin': 'round'}, svg);
+    svgEl('circle', {cx: x(choisi), cy: y(points[choisi].capital), r: 9, fill: 'none', stroke: '#ece8dd', 'stroke-width': 1.2}, svg);
+    points.forEach((p, i) => {
+      svgEl('circle', {cx: x(i), cy: y(p.capital), r: 4.5, fill: i === 0 ? '#9fadb3' : p.gagne ? '#45b27a' : '#dc5a50', stroke: '#1b252b', 'stroke-width': 1.5}, svg);
+    });
+    const reperes = n <= 4 ? points.map((_, i) => i) : [0, Math.round(n / 3), Math.round(2 * n / 3), n];
+    reperes.forEach((i) => {
+      svgEl('text', {x: x(i), y: H - 7, 'text-anchor': 'middle'}, svg).textContent = i === 0 ? 'Départ' : jour(points[i].nuit);
+    });
+    const viser = (ev) => {
+      const boite = svg.getBoundingClientRect();
+      if (!boite.width) return;
+      const px = (ev.clientX - boite.left) * W / boite.width;
+      let mieux = 0;
+      points.forEach((_, i) => { if (Math.abs(x(i) - px) < Math.abs(x(mieux) - px)) mieux = i; });
+      if (mieux !== choisi) { choisi = mieux; dessinerCourbe(); }
+    };
+    svg.addEventListener('pointerdown', viser);
+    svg.addEventListener('pointermove', (ev) => { if (ev.pointerType === 'mouse' || ev.buttons) viser(ev); });
+    el.replaceChildren(svg);
+    decrire(choisi);
+  }
+  dessinerCourbe();
+  let largeur = window.innerWidth;
+  window.addEventListener('resize', () => {
+    if (window.innerWidth !== largeur) { largeur = window.innerWidth; dessinerCourbe(); }
+  });
+
+  /* ---- tickets ---- */
+  const nonJoues = D.paris.filter((t) => !estJoue(t));
+  $('sous-tickets').textContent = D.paris.length === 0
+    ? 'Aucun ticket pour l’instant.'
+    : (nonJoues.length ? 'Les tickets marqués « non joué » sont suivis sans mise. ' : '') + 'Les mises commencent le ' + jour(REF.debut_mises) + '.';
+  const liste = $('tickets');
+  D.paris.slice().reverse().forEach((t) => {
+    const li = noeud('li', 'ticket');
+    const haut = noeud('div', 't-haut');
+    haut.append(noeud('span', 't-date', jour(t.nuit)), noeud('span', 't-nom', t.ticket), noeud('span', 't-cote', nf2.format(t.cote)));
+    const bas = noeud('div', 't-bas');
+    bas.append(noeud('span', 'pastille ' + (estRegle(t) ? t.statut : 'attente'), t.statut === 'gagne' ? 'Gagné' : t.statut === 'perdu' ? 'Perdu' : 'En attente'));
+    if (!estJoue(t)) bas.append(noeud('span', 'sans-mise', 'non joué'));
+    const compte = estJoue(t) && estRegle(t);
+    const g = noeud('span', 't-gain' + (compte ? (gainDe(t) > 0 ? ' pos' : ' neg') : ''), compte ? eurS(gainDe(t)) : '—');
+    bas.append(g);
+    li.append(haut, bas);
+    liste.append(li);
+  });
+
+  /* ---- analyse enregistrée ---- */
+  const version = (cote, ok) => {
+    const n = D.historique.length;
+    const gagnes = D.historique.filter((t) => t[ok] === 1).length;
+    const g = somme(D.historique, (t) => (t[ok] === 1 ? REF.mise * (t[cote] - 1) : -REF.mise));
+    return {gain: g, texte: gagnes + ' / ' + n + ' tickets, ROI ' + pctS(n ? 100 * g / (n * REF.mise) : 0)};
+  };
+  [['h-ml', 'hs-ml', version('cote_ml', 'ok_ml')], ['h-hcp', 'hs-hcp', version('cote_hcp', 'ok_hcp')]].forEach((v) => {
+    $(v[0]).textContent = eurS(v[2].gain);
+    $(v[0]).className = v[2].gain > 0 ? 'pos' : v[2].gain < 0 ? 'neg' : '';
+    $(v[1]).textContent = v[2].texte;
+  });
+  const corps = $('t-histo');
+  D.historique.forEach((t) => {
+    const tr = document.createElement('tr');
+    tr.append(noeud('td', 'd', jour(t.nuit)), noeud('td', '', t.ticket_ml), noeud('td', 'n', nf2.format(t.cote_ml)), noeud('td', t.ok_ml === 1 ? 'pos' : 'neg', t.ok_ml === 1 ? 'Gagné' : 'Perdu'),
+      noeud('td', '', t.ticket_hcp), noeud('td', 'n', nf2.format(t.cote_hcp)), noeud('td', t.ok_hcp === 1 ? 'pos' : 'neg', t.ok_hcp === 1 ? 'Gagné' : 'Perdu'));
+    corps.append(tr);
+  });
+
+  /* ---- hors ligne et rafraîchissement ---- */
+  if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+  const ouverture = Date.now();
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && Date.now() - ouverture > 15 * 60 * 1000) location.reload();
+  });
+})();
+</script>
+</body>
+</html>
