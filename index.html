@@ -94,7 +94,7 @@ td.d{white-space:nowrap}
 </section>
 
 <section class="lectures" aria-label="Chiffres du suivi">
-  <div class="lecture"><span>Gain net</span><b id="v-gain">—</b><small id="s-gain"></small></div>
+  <div class="lecture"><span>Gain net de la méthode</span><b id="v-gain">—</b><small id="s-gain"></small></div>
   <div class="lecture"><span>En attente</span><b id="v-attente">—</b><small id="s-attente"></small></div>
   <div class="lecture"><span>Mise par ticket</span><b id="v-mise">—</b><small id="s-mise"></small></div>
   <div class="lecture"><span>Paris hors plan</span><b id="v-hors">—</b><small id="s-hors"></small></div>
@@ -102,7 +102,7 @@ td.d{white-space:nowrap}
 
 <section class="bloc">
   <h2>Évolution du capital</h2>
-  <p class="sous">Un point par ticket joué et réglé. Toucher un point pour le détail.</p>
+  <p class="sous">Un point par pari joué et réglé (cerclé d’orange : hors plan). Toucher un point pour le détail.</p>
   <div class="courbe" id="courbe"></div>
   <p class="legende" id="legende" aria-live="polite"></p>
 </section>
@@ -131,17 +131,17 @@ td.d{white-space:nowrap}
   </details>
   <details class="notes">
     <summary>Définitions</summary>
-    <p>Capital : capital de départ plus les gains et pertes des tickets joués et réglés.</p>
+    <p>Capital : capital de départ plus les gains et pertes de tous les paris joués et réglés, hors plan compris.</p>
     <p>À sec : nombre de défaites d’affilée après lesquelles le capital ne couvre plus une mise. Il monte quand le capital monte, puisque les gains restent dans le capital.</p>
     <p>ROI : gain net divisé par le total misé. La saison compte tous les gros paris depuis le 22/10, tickets non joués compris, à la mise fixe.</p>
     <p>Seuil de rentabilité : part de tickets à gagner pour être à l’équilibre, soit 1 divisé par la cote moyenne.</p>
     <p>Gros pari : ticket ML du soir, avec handicap sur les jambes à cote ≈ 1,10 ; un prop joueur peut s’y ajouter. Deux tickets sûrs le même soir comptent pour deux mises.</p>
     <p>Cotes : cote estimée du bookmaker, remplacée par la cote réellement obtenue quand elle est communiquée.</p>
-    <p>Paris hors plan : tout pari joué en dehors du gros pari du soir, tel que tu me le signales. Il est compté à part : il ne change ni le capital, ni le ROI de la méthode.</p>
+    <p>Paris hors plan : tout pari joué en dehors du gros pari du soir, tel que tu me le signales. Il compte dans le capital (c’est ton argent), mais pas dans le gain net ni dans le ROI de la méthode.</p>
   </details>
 </section>
 
-<script id="donnees" type="application/json">{"maj":"2026-11-12T23:26","reglages":{"capital":1000,"mise":250,"debut_mises":"2026-11-13"},"paris":[{"id":"2026-11-12-T1","nuit":"2026-11-12","ticket":"DET + PHX","type":"ML","cote":1.79,"statut":"attente","mise":250.0,"joue":0},{"id":"2026-11-12-T2","nuit":"2026-11-12","ticket":"MIN + DET","type":"ML","cote":1.88,"statut":"attente","mise":250.0,"joue":0}],"historique":[{"id":"2026-10-22-1","nuit":"2026-10-22","ticket_ml":"OKC","cote_ml":1.33,"ok_ml":1,"ticket_hcp":"OKC","cote_hcp":1.33,"ok_hcp":1},{"id":"2026-10-23-1","nuit":"2026-10-23","ticket_ml":"LAL + POR","cote_ml":1.72,"ok_ml":1,"ticket_hcp":"LAL + POR","cote_hcp":1.72,"ok_hcp":1},{"id":"2026-10-24-1","nuit":"2026-10-24","ticket_ml":"PHI + SAS + DEN","cote_ml":1.62,"ok_ml":1,"ticket_hcp":"PHI -5.5 (+11) + SAS -5.5 (+16) + DEN","cote_hcp":2.07,"ok_hcp":1},{"id":"2026-10-25-1","nuit":"2026-10-25","ticket_ml":"OKC + NYK + IND","cote_ml":1.96,"ok_ml":0,"ticket_hcp":"OKC -7.5 (+7) + NYK + IND","cote_hcp":2.36,"ok_hcp":0},{"id":"2026-10-26-1","nuit":"2026-10-26","ticket_ml":"BOS + OKC","cote_ml":1.46,"ok_ml":1,"ticket_hcp":"BOS -7.5 (+35) + OKC","cote_hcp":1.65,"ok_hcp":1},{"id":"2026-10-27-1","nuit":"2026-10-27","ticket_ml":"BOS + SAS","cote_ml":1.25,"ok_ml":1,"ticket_hcp":"BOS -4.5 (+1) + SAS -11.5 (+27)","cote_hcp":1.75,"ok_hcp":0},{"id":"2026-10-28-1","nuit":"2026-10-28","ticket_ml":"CLE + HOU","cote_ml":1.69,"ok_ml":1,"ticket_hcp":"CLE + HOU","cote_hcp":1.69,"ok_hcp":1},{"id":"2026-10-29-1","nuit":"2026-10-29","ticket_ml":"POR","cote_ml":1.35,"ok_ml":0,"ticket_hcp":"POR","cote_hcp":1.35,"ok_hcp":0},{"id":"2026-10-30-1","nuit":"2026-10-30","ticket_ml":"BOS + DET + MIA","cote_ml":1.9,"ok_ml":1,"ticket_hcp":"BOS -8.5 (+14) + DET + MIA","cote_hcp":2.31,"ok_hcp":1},{"id":"2026-10-31-1","nuit":"2026-10-31","ticket_ml":"CLE + SAS + Sabonis 11+ reb","cote_ml":2.1,"ok_ml":1,"ticket_hcp":"CLE + SAS -5.5 (+10) + Sabonis 11+ reb","cote_hcp":2.35,"ok_hcp":1},{"id":"2026-11-04-1","nuit":"2026-11-04","ticket_ml":"NYK + SAS + HOU","cote_ml":1.93,"ok_ml":0,"ticket_hcp":"NYK -4.5 (+30) + SAS + HOU","cote_hcp":2.13,"ok_hcp":0},{"id":"2026-11-06-1","nuit":"2026-11-06","ticket_ml":"SAS + BOS + DAL","cote_ml":1.95,"ok_ml":1,"ticket_hcp":"SAS -8.5 (+15) + BOS + DAL","cote_hcp":2.31,"ok_hcp":1},{"id":"2026-11-07-1","nuit":"2026-11-07","ticket_ml":"OKC + DEN","cote_ml":1.67,"ok_ml":1,"ticket_hcp":"OKC + DEN","cote_hcp":1.67,"ok_hcp":1},{"id":"2026-11-08-1","nuit":"2026-11-08","ticket_ml":"BOS + MIN + PHI","cote_ml":1.71,"ok_ml":1,"ticket_hcp":"BOS -5.5 (+20) + MIN -4.5 (+15) + PHI","cote_hcp":2.1,"ok_hcp":1},{"id":"2026-11-09-1","nuit":"2026-11-09","ticket_ml":"DET + GSW + CLE","cote_ml":1.97,"ok_ml":0,"ticket_hcp":"DET + GSW -6.5 (+51) + CLE","cote_hcp":2.24,"ok_hcp":0},{"id":"2026-11-10-1","nuit":"2026-11-10","ticket_ml":"COL + NYK -9.5 + BOS","cote_ml":4.1,"ok_ml":1,"ticket_hcp":"COL + NYK -9.5 (+32) + BOS","cote_hcp":4.1,"ok_hcp":1},{"id":"2026-11-11-1","nuit":"2026-11-11","ticket_ml":"LAL -5.5 + SAS -7.5","cote_ml":1.5,"ok_ml":0,"ticket_hcp":"LAL -5.5 (+11) + SAS -7.5 (+5)","cote_hcp":1.5,"ok_hcp":0},{"id":"2026-11-11-2","nuit":"2026-11-11","ticket_ml":"EDM + SGA 27.5+ + SAS -7.5","cote_ml":2.52,"ok_ml":0,"ticket_hcp":"EDM + SGA 27.5+ + SAS -7.5 (+5)","cote_hcp":2.52,"ok_hcp":0}],"hors_plan":[]}</script>
+<script id="donnees" type="application/json">{"maj":"2026-11-12T23:29","reglages":{"capital":1000,"mise":250,"debut_mises":"2026-11-13"},"paris":[{"id":"2026-11-12-T1","nuit":"2026-11-12","ticket":"DET + PHX","type":"ML","cote":1.79,"statut":"attente","mise":250.0,"joue":0},{"id":"2026-11-12-T2","nuit":"2026-11-12","ticket":"MIN + DET","type":"ML","cote":1.88,"statut":"attente","mise":250.0,"joue":0}],"historique":[{"id":"2026-10-22-1","nuit":"2026-10-22","ticket_ml":"OKC","cote_ml":1.33,"ok_ml":1,"ticket_hcp":"OKC","cote_hcp":1.33,"ok_hcp":1},{"id":"2026-10-23-1","nuit":"2026-10-23","ticket_ml":"LAL + POR","cote_ml":1.72,"ok_ml":1,"ticket_hcp":"LAL + POR","cote_hcp":1.72,"ok_hcp":1},{"id":"2026-10-24-1","nuit":"2026-10-24","ticket_ml":"PHI + SAS + DEN","cote_ml":1.62,"ok_ml":1,"ticket_hcp":"PHI -5.5 (+11) + SAS -5.5 (+16) + DEN","cote_hcp":2.07,"ok_hcp":1},{"id":"2026-10-25-1","nuit":"2026-10-25","ticket_ml":"OKC + NYK + IND","cote_ml":1.96,"ok_ml":0,"ticket_hcp":"OKC -7.5 (+7) + NYK + IND","cote_hcp":2.36,"ok_hcp":0},{"id":"2026-10-26-1","nuit":"2026-10-26","ticket_ml":"BOS + OKC","cote_ml":1.46,"ok_ml":1,"ticket_hcp":"BOS -7.5 (+35) + OKC","cote_hcp":1.65,"ok_hcp":1},{"id":"2026-10-27-1","nuit":"2026-10-27","ticket_ml":"BOS + SAS","cote_ml":1.25,"ok_ml":1,"ticket_hcp":"BOS -4.5 (+1) + SAS -11.5 (+27)","cote_hcp":1.75,"ok_hcp":0},{"id":"2026-10-28-1","nuit":"2026-10-28","ticket_ml":"CLE + HOU","cote_ml":1.69,"ok_ml":1,"ticket_hcp":"CLE + HOU","cote_hcp":1.69,"ok_hcp":1},{"id":"2026-10-29-1","nuit":"2026-10-29","ticket_ml":"POR","cote_ml":1.35,"ok_ml":0,"ticket_hcp":"POR","cote_hcp":1.35,"ok_hcp":0},{"id":"2026-10-30-1","nuit":"2026-10-30","ticket_ml":"BOS + DET + MIA","cote_ml":1.9,"ok_ml":1,"ticket_hcp":"BOS -8.5 (+14) + DET + MIA","cote_hcp":2.31,"ok_hcp":1},{"id":"2026-10-31-1","nuit":"2026-10-31","ticket_ml":"CLE + SAS + Sabonis 11+ reb","cote_ml":2.1,"ok_ml":1,"ticket_hcp":"CLE + SAS -5.5 (+10) + Sabonis 11+ reb","cote_hcp":2.35,"ok_hcp":1},{"id":"2026-11-04-1","nuit":"2026-11-04","ticket_ml":"NYK + SAS + HOU","cote_ml":1.93,"ok_ml":0,"ticket_hcp":"NYK -4.5 (+30) + SAS + HOU","cote_hcp":2.13,"ok_hcp":0},{"id":"2026-11-06-1","nuit":"2026-11-06","ticket_ml":"SAS + BOS + DAL","cote_ml":1.95,"ok_ml":1,"ticket_hcp":"SAS -8.5 (+15) + BOS + DAL","cote_hcp":2.31,"ok_hcp":1},{"id":"2026-11-07-1","nuit":"2026-11-07","ticket_ml":"OKC + DEN","cote_ml":1.67,"ok_ml":1,"ticket_hcp":"OKC + DEN","cote_hcp":1.67,"ok_hcp":1},{"id":"2026-11-08-1","nuit":"2026-11-08","ticket_ml":"BOS + MIN + PHI","cote_ml":1.71,"ok_ml":1,"ticket_hcp":"BOS -5.5 (+20) + MIN -4.5 (+15) + PHI","cote_hcp":2.1,"ok_hcp":1},{"id":"2026-11-09-1","nuit":"2026-11-09","ticket_ml":"DET + GSW + CLE","cote_ml":1.97,"ok_ml":0,"ticket_hcp":"DET + GSW -6.5 (+51) + CLE","cote_hcp":2.24,"ok_hcp":0},{"id":"2026-11-10-1","nuit":"2026-11-10","ticket_ml":"COL + NYK -9.5 + BOS","cote_ml":4.1,"ok_ml":1,"ticket_hcp":"COL + NYK -9.5 (+32) + BOS","cote_hcp":4.1,"ok_hcp":1},{"id":"2026-11-11-1","nuit":"2026-11-11","ticket_ml":"LAL -5.5 + SAS -7.5","cote_ml":1.5,"ok_ml":0,"ticket_hcp":"LAL -5.5 (+11) + SAS -7.5 (+5)","cote_hcp":1.5,"ok_hcp":0},{"id":"2026-11-11-2","nuit":"2026-11-11","ticket_ml":"EDM + SGA 27.5+ + SAS -7.5","cote_ml":2.52,"ok_ml":0,"ticket_hcp":"EDM + SGA 27.5+ + SAS -7.5 (+5)","cote_hcp":2.52,"ok_hcp":0}],"hors_plan":[]}</script>
 <script>
 (() => {
   'use strict';
@@ -174,7 +174,10 @@ td.d{white-space:nowrap}
   const attente = joues.filter((t) => t.statut === 'attente');
   const gain = somme(regles, gainDe);
   const mise = somme(regles, (t) => t.mise);
-  const capital = REF.capital + gain;
+  const hors = D.hors_plan || [];
+  const horsRegles = hors.filter(estRegle);
+  const horsNet = somme(horsRegles, gainDe);
+  const capital = REF.capital + gain + horsNet;
   const reste = Math.max(0, Math.floor(capital / REF.mise));
   let serie = 0;
   regles.forEach((t) => { serie = t.statut === 'perdu' ? serie + 1 : 0; });
@@ -193,15 +196,19 @@ td.d{white-space:nowrap}
   saison.forEach((t) => { sSerie = t.gagne ? 0 : sSerie + 1; sPire = Math.max(sPire, sSerie); });
 
   const points = [{capital: REF.capital}];
-  regles.forEach((t) => {
-    const g = gainDe(t);
-    points.push({capital: points[points.length - 1].capital + g, gain: g, nuit: t.nuit, ticket: t.ticket, gagne: t.statut === 'gagne'});
-  });
+  regles.map((t, i) => ({t: t, ordre: i, hors: false, nom: t.ticket}))
+    .concat(horsRegles.map((t, i) => ({t: t, ordre: 1000 + i, hors: true, nom: t.pari})))
+    .sort((a, b) => (a.t.nuit < b.t.nuit ? -1 : a.t.nuit > b.t.nuit ? 1 : a.ordre - b.ordre))
+    .forEach((e) => {
+      const g = gainDe(e.t);
+      points.push({capital: points[points.length - 1].capital + g, gain: g, nuit: e.t.nuit, ticket: e.nom, gagne: e.t.statut === 'gagne', hors: e.hors});
+    });
 
   /* ---- en-tête ---- */
   $('etat').textContent = joues.length === 0
     ? 'Aucune mise pour l’instant. Les mises commencent le ' + jour(REF.debut_mises) + ' avec un capital de ' + eur(REF.capital) + '.'
     : 'Capital de ' + eur(capital) + ' après ' + regles.length + ' ticket' + (regles.length > 1 ? 's' : '') + ' joué' + (regles.length > 1 ? 's' : '') + ' et réglé' + (regles.length > 1 ? 's' : '') + '.'
+      + (horsRegles.length ? ' Dont ' + horsRegles.length + ' pari' + (horsRegles.length > 1 ? 's' : '') + ' hors plan : ' + eurS(horsNet) + '.' : '')
       + (attente.length ? ' ' + attente.length + ' en attente, ' + eur(engage) + ' engagés.' : '');
   const bouton = $('maj');
   bouton.textContent = '↻ ' + jour(D.maj) + ' à ' + D.maj.slice(11, 13) + 'h' + D.maj.slice(14, 16);
@@ -308,7 +315,7 @@ td.d{white-space:nowrap}
     ton: capital > REF.capital ? 'pos' : capital < REF.capital ? 'neg' : 'neutre',
     aria: 'Capital : ' + eur(capital) + ', pour un départ à ' + eur(REF.capital)
   });
-  legender('l-capital', [['À sec en ', [String(reste)], ' défaite' + (reste > 1 ? 's' : '') + ' d’affilée'], ['Départ ' + eur(REF.capital)]]);
+  legender('l-capital', [['À sec en ', [String(reste)], ' défaite' + (reste > 1 ? 's' : '') + ' d’affilée'], ['Départ ' + eur(REF.capital) + (horsRegles.length ? ' · dont hors plan ' + eurS(horsNet) : '')]]);
 
   const borne = Math.max(50, Math.ceil(Math.abs(sRoi) / 25) * 25);
   dessinerCadran('c-roi', {
@@ -346,9 +353,6 @@ td.d{white-space:nowrap}
   $('s-attente').textContent = attente.length ? eur(engage) + ' engagés' : 'rien d’engagé';
   $('v-mise').textContent = eur(REF.mise);
   $('s-mise').textContent = 'la même chaque soir';
-  const hors = D.hors_plan || [];
-  const horsRegles = hors.filter(estRegle);
-  const horsNet = somme(horsRegles, gainDe);
   const vHors = $('v-hors');
   vHors.textContent = String(hors.length);
   if (hors.length) vHors.className = 'neg';
@@ -360,7 +364,7 @@ td.d{white-space:nowrap}
     const p = points[i];
     legende.textContent = i === 0
       ? 'Départ : ' + eur(p.capital) + (points.length === 1 ? '. La courbe démarre au premier ticket joué.' : '.')
-      : 'Nuit du ' + jour(p.nuit) + ', ' + p.ticket + ' : ' + (p.gagne ? 'gagné ' : 'perdu ') + eurS(p.gain) + ', capital ' + eur(p.capital) + '.';
+      : 'Nuit du ' + jour(p.nuit) + ', ' + (p.hors ? 'hors plan : ' : '') + p.ticket + ' : ' + (p.gagne ? 'gagné ' : 'perdu ') + eurS(p.gain) + ', capital ' + eur(p.capital) + '.';
   };
   let choisi = points.length - 1;
   function dessinerCourbe() {
@@ -383,7 +387,7 @@ td.d{white-space:nowrap}
     if (n > 0) svgEl('polyline', {points: points.map((p, i) => x(i).toFixed(1) + ',' + y(p.capital).toFixed(1)).join(' '), fill: 'none', stroke: '#ece8dd', 'stroke-width': 2, 'stroke-linejoin': 'round'}, svg);
     svgEl('circle', {cx: x(choisi), cy: y(points[choisi].capital), r: 9, fill: 'none', stroke: '#ece8dd', 'stroke-width': 1.2}, svg);
     points.forEach((p, i) => {
-      svgEl('circle', {cx: x(i), cy: y(p.capital), r: 4.5, fill: i === 0 ? '#9fadb3' : p.gagne ? '#45b27a' : '#dc5a50', stroke: '#1b252b', 'stroke-width': 1.5}, svg);
+      svgEl('circle', {cx: x(i), cy: y(p.capital), r: 4.5, fill: i === 0 ? '#9fadb3' : p.gagne ? '#45b27a' : '#dc5a50', stroke: p.hors ? '#e3a72f' : '#1b252b', 'stroke-width': p.hors ? 2.5 : 1.5}, svg);
     });
     const reperes = n <= 4 ? points.map((_, i) => i) : [0, Math.round(n / 3), Math.round(2 * n / 3), n];
     reperes.forEach((i) => {
@@ -430,8 +434,8 @@ td.d{white-space:nowrap}
 
   /* ---- paris hors plan ---- */
   $('sous-hors').textContent = hors.length === 0
-    ? 'Aucun pari en dehors du plan. Ils sont comptés à part, sans toucher au capital ni au ROI de la méthode.'
-    : hors.length + ' pari' + (hors.length > 1 ? 's' : '') + ' en dehors du plan' + (horsRegles.length ? ', bilan ' + eurS(horsNet) : '') + '. Comptés à part : ils ne changent ni le capital ni le ROI de la méthode.';
+    ? 'Aucun pari en dehors du plan. S’il y en a, ils comptent dans le capital, mais pas dans le ROI de la méthode.'
+    : hors.length + ' pari' + (hors.length > 1 ? 's' : '') + ' en dehors du plan' + (horsRegles.length ? ', bilan ' + eurS(horsNet) : '') + '. Ils comptent dans le capital, pas dans le ROI de la méthode.';
   const listeHors = $('hors');
   hors.slice().reverse().forEach((t) => {
     const li = noeud('li', 'ticket');
